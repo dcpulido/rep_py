@@ -113,7 +113,7 @@ if __name__ == "__main__":
                     mixer.music.play()
                     """
                     t1 = threading.Thread(target=os.system(
-                        "play-audio \"./library/"+rep_list[index]))
+                        "play-audio \"./library/"+rep_list[index]+"\""))
                     t1.start()
                 elif char == curses.KEY_DOWN:
                     t1._Thread__stop()
