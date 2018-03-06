@@ -32,7 +32,10 @@ class rekt:
         self.thread.terminate()
 
     def next(self):
-        self.stop()
+        try:
+            self.stop()
+        except Exception as e:
+            pass        
         self.reproduce()
 
 

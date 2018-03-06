@@ -91,12 +91,12 @@ if __name__ == "__main__":
                 char = screen.getch()
                 if char == ord('q'):
                     break
-                elif char == curses.KEY_UP :
-                    rk.next()
-                elif char == curses.KEY_DOWN:
+                elif char == ord('p'):
                     rk.stop()
-                elif char == ord('r'):
-                    pass
+                elif char == ord('s'):
+                    rk.reproduce()
+                else:
+                    rk.next()
         except Exception as e:
             raise e
             curses.nocbreak()
