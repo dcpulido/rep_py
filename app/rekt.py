@@ -23,6 +23,8 @@ class rekt:
             self.index = 0
         else:
             self.index = self.index + 1
+        self.thread.join()
+        self.reproduce()
 
     def get_library(self):
         return [f for f in listdir("./library")
