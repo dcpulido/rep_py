@@ -1,31 +1,23 @@
 import sys
+sys.path.insert(0, "./app")
 import os
 import curses
-from os import listdir
-from os.path import isfile, join
-import threading
 import time
-import mutagen.mp3
+from rekt import rekt
 
 rep = False
-
-
-def get_library():
-    return [f for f in listdir("./library") if isfile(join("./library", f))]
-
 
 def show_songs(size,
                screen,
                rep_list):
     init = int(size["height"] * 0.1)
     tail = int(size["height"] - init*2)
-    library = get_library()
     aux = 0
     for k in range(init, tail):
-        if aux <= (len(library)-1):
+        if aux <= (len(rep_list)-1):
             screen.addstr(k,
                           0,
-                          library[aux])
+                          rep_list[aux])
         aux = aux + 1
     screen.refresh()
 
@@ -69,8 +61,7 @@ def sleeper(tm):
 
 
 def refresh(screen,
-            rep_list,
-            index):
+            rep_list):
     sizes = get_window_size(screen)
     clear_window(sizes, screen)
     show_head(sizes, screen)
@@ -91,37 +82,19 @@ if __name__ == "__main__":
             curses.noecho()
             curses.cbreak()
             screen.keypad(True)
-            rep_list = get_library()
-            index = 0
-            thread = None
-            init = True
+            rk = rekt()
+            rep_list = rk.library
+            rk.reproduce()
 
             while True:
-                refresh(screen, rep_list, index)
+                refresh(screen, rep_list)
                 char = screen.getch()
                 if char == ord('q'):
                     break
-                elif char == curses.KEY_UP or rep == False or init == True:
-                    """
-                    mp3 = mutagen.mp3.MP3("./library/"+rep_list[index])
-                    mixer.init(frequency=mp3.info.sample_rate)
-                    mixer.music.load("./library/"+rep_list[index])
-                    if index == len(rep_list)-1:
-                        index = 0
-                    else:
-                        index = index + 1
-                    mixer.music.play()
-                    """
-                    t1 = threading.Thread(target=os.system(
-                        "play-audio \"./library/"+rep_list[index]+"\""))
-                    t1.start()
+                elif char == curses.KEY_UP :
+                    rk.next()
                 elif char == curses.KEY_DOWN:
-                    t1._Thread__stop()
-                    fl = False
-                    if init == True:
-                        init = False
-                    else:
-                        init = True
+                    rk.stop()
                 elif char == ord('r'):
                     pass
         except Exception as e:
