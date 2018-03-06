@@ -5,7 +5,6 @@ from os import listdir
 from os.path import isfile, join
 import threading
 import time
-from pygame import mixer
 import mutagen.mp3
 
 rep = False
